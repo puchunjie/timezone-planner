@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { MeetingPlanner } from "@/components/meeting-planner";
 
 export default function Home() {
@@ -19,7 +20,13 @@ export default function Home() {
           </p>
         </section>
 
-        <MeetingPlanner />
+        <Suspense
+          fallback={
+            <div className="bg-card mx-auto h-72 w-full max-w-4xl animate-pulse rounded-lg border" />
+          }
+        >
+          <MeetingPlanner />
+        </Suspense>
 
         <section className="grid gap-4 sm:grid-cols-3">
           <Feature

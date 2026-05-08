@@ -664,36 +664,65 @@ Cloudflare Pages 免费版 500 次 build/月够用。策略：
 
 按顺序做，目标**第一周末有一个可访问的 URL + 完成 50 城市数据 + Meeting Planner 能用**。
 
-### Day 1（Mon，2-3h）
-- [ ] `npx create-next-app@latest timezone-planner --typescript --tailwind --app`
-- [ ] `npm i luxon @vvo/tzdb ics`
-- [ ] `npx shadcn@latest init`
-- [ ] 推 GitHub
-- [ ] 配 Cloudflare Pages 自动部署
+> **进度更新（2026-05-08）**：Day 1-3 已完成，提前进入 Day 4-5 阶段。
+> - 仓库：https://github.com/puchunjie/timezone-planner
+> - 线上：https://timezone-planner.puchunjie.workers.dev/
 
-### Day 2（Tue，2-3h）
-- [ ] 创建 `data/cities.ts`，填完 50 座城市全字段（参考第 5 章）
-- [ ] 编写 `lib/timezone.ts`：`getOffset(city, date)`、`getOverlap(cityA, cityB)`
-- [ ] **关键**：为每座城市写 DST 测试（夏/冬各 1 个 case）
+### Day 1（Mon，2-3h）✅ 完成
+- [x] `pnpm create next-app@latest`（Next.js 16 + TS + Tailwind v4 + App Router）
+- [x] `pnpm i luxon @vvo/tzdb ics @types/luxon`
+- [x] `pnpm dlx shadcn@latest init`（neutral base，已生成 `components/ui/button.tsx` + `lib/utils.ts`）
+- [x] 推 GitHub（私有仓库）
+- [x] 配 Cloudflare Workers 自动部署（OpenNext 适配，自动加上 `wrangler.jsonc`）
 
-### Day 3（Wed，2-3h）
-- [ ] 首页 Hero + 占位 Meeting Planner 组件
-- [ ] 多城市 timeline 滑块的静态 UI（先不联动）
+**Day 1 实际遇到并解决的坑**：
+- Node 18 → 20 → 22（Next.js 16 要 ≥20，Cloudflare Wrangler 4.x 要 ≥22）
+- pnpm 切 Node 后需要 `corepack enable && corepack prepare pnpm@10.9.0 --activate`
+- `~/Desktop/node_modules` 历史残留干扰 Turbopack → `next.config.ts` 加 `turbopack.root`
+- 加 `.nvmrc` 锁住 Node 22
 
-### Day 4（Thu，2-3h）
-- [ ] 让 Meeting Planner 真正联动（滑块拖动 → 所有城市时间更新）
-- [ ] 最多支持 5 个城市同时显示
+### Day 2（Tue，2-3h）✅ 完成
+- [x] `data/cities.ts`：50 座城市全字段（slug / name / country / IANA tz / 坐标 / 人口 / isNomadHub / SEO 简介）
+- [x] `lib/timezone.ts`：`getOffsetHours` / `getOffsetLabel` / `getTimeDifferenceHours` / `getOverlap`（cityA 锚定当天 + cityB 跨 ±1 天匹配）/ `isDST` / `nextDSTChange` / `suggestMeetingTimes`
+- [x] `vitest` + `tests/timezone.test.ts`：**219 个用例全部通过**
+  - 50 城 IANA tz 合法
+  - 北半球 21 城夏季 DST、冬季无 DST
+  - 南半球 4 城（含 Santiago）反向 DST
+  - 25 个 no-DST 城市夏冬偏移恒定
+  - 关键基准点：NY、London、Tokyo、Sydney、Bengaluru、Auckland
+  - NY-Tokyo overlap=0h、NY-London summer=4-5h、Singapore-Tokyo overlap≥7h
 
-### Day 5（Fri，1-2h）
-- [ ] 部署到 Cloudflare Pages
+### Day 3（Wed，2-3h）✅ 完成（提前合并 Day 4 部分内容）
+- [x] `components/meeting-planner.tsx`：客户端交互组件，最多 5 城同时显示
+  - 48 半小时分辨率 timeline
+  - 单个时间指针拖动 → 所有城市时间联动
+  - 9-18 工作时段绿条可视化
+  - overlap 实时计算
+  - add/remove/reset 城市
+- [x] `app/page.tsx`：MVP 落地页（Hero + Planner + 3 feature 卡）
+- [x] `app/meet/[pair]/page.tsx`：SSG 模板（含 TL;DR / 时区介绍 / best meeting times / scenarios / FAQ / related pairs 内链）
+- [x] `lib/pairs.ts`：`pairSlug` / `allPairSlugs` / `parsePairSlug` / `relatedPairs`
+- [x] **压力测试通过**：1229 个静态页 8.8 秒 SSG 完成（提前实现原计划 Week 4 的全量 1225 页规模）
+- [x] 改用 system font 替代 `next/font/google`（中国网络无障碍 build）
+
+### Day 4（Thu，2-3h）⬜ 进行中
+- [ ] `/city/[city]/page.tsx` 模板（50 个单城市页）
+- [ ] `/timezone/[tz-short]/page.tsx`（约 30 个）
+- [ ] Schedule as `.ics` 下载功能
+- [ ] Shareable URL（URL 参数序列化 + `/meeting/[hash]` 不索引页）
+
+### Day 5（Fri，1-2h）⬜
+- [ ] About / Privacy / Terms / Contact 4 页（AdSense 合规必备）
+- [ ] sitemap.xml / robots.txt（分片）
 - [ ] 在手机上测试（必须）
-- [ ] Core Web Vitals 先跑一次 Lighthouse
+- [ ] Lighthouse Core Web Vitals 跑一次
 
-### Weekend（2-3h）
-- [ ] 回顾本周，给自己交付物录一个 1 分钟的"我做到了"视频
-- [ ] 列下周要做的城市对页 SSG 实现
+### Weekend（2-3h）⬜
+- [ ] 第 1-3 篇博客文章
+- [ ] JSON-LD 组件封装（`Article` / `Place` / `BreadcrumbList`）
+- [ ] 回顾本周，决定下周节奏
 
-**第一周结束的 Demo URL**：`timezone-planner-xxx.pages.dev` 能访问首页 + 能在 5 个城市之间拖滑块看时间变化。
+**第一周结束的 Demo URL**：~~`timezone-planner-xxx.pages.dev`~~ → **已就绪**：https://timezone-planner.puchunjie.workers.dev/
 
 ---
 

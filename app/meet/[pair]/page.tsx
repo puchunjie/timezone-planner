@@ -14,6 +14,7 @@ import {
   getOverlap,
   getTimeDifferenceHours,
 } from "@/lib/timezone";
+import { ArticleJsonLd, BreadcrumbJsonLd } from "@/components/json-ld";
 
 interface PageProps {
   params: Promise<{ pair: string }>;
@@ -109,6 +110,20 @@ export default async function MeetPairPage({ params }: PageProps) {
 
   return (
     <div className="bg-background min-h-dvh font-sans">
+      <ArticleJsonLd
+        id={`ld-meet-${pair.slug}`}
+        headline={`Meeting Time Between ${a.name} and ${b.name}`}
+        description={`Time difference is ${absDiff} hours. See business-hour overlap and best meeting times.`}
+        url={`/meet/${pair.slug}`}
+      />
+      <BreadcrumbJsonLd
+        id={`ld-bc-meet-${pair.slug}`}
+        items={[
+          { name: "Home", url: "/" },
+          { name: "Meet", url: "/" },
+          { name: `${a.name} and ${b.name}`, url: `/meet/${pair.slug}` },
+        ]}
+      />
       <main className="mx-auto flex max-w-3xl flex-col gap-8 px-4 py-10 sm:py-16">
         <nav className="text-muted-foreground text-sm">
           <Link href="/" className="hover:underline">

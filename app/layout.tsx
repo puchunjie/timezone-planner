@@ -1,7 +1,11 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { SiteFooter, SiteHeader } from "@/components/site-chrome";
+import { WebsiteJsonLd } from "@/components/json-ld";
+import { SITE_URL } from "@/lib/site";
 
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   title: {
     default: "Meeting Planner for Remote Teams Across Time Zones",
     template: "%s | Timezone Planner",
@@ -18,7 +22,10 @@ export default function RootLayout({
   return (
     <html lang="en" className="h-full antialiased">
       <body className="bg-background text-foreground flex min-h-full flex-col font-sans">
-        {children}
+        <WebsiteJsonLd />
+        <SiteHeader />
+        <div className="flex-1">{children}</div>
+        <SiteFooter />
       </body>
     </html>
   );

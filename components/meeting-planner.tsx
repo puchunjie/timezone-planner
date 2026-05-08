@@ -1,7 +1,8 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { DateTime } from "luxon";
+import { useSearchParams } from "next/navigation";
 import { Slider } from "@/components/ui/slider";
 import {
   Select,
@@ -17,10 +18,13 @@ import {
   formatLocalTime,
   getOffsetLabel,
 } from "@/lib/timezone";
+import { buildMeetingICS, downloadICS } from "@/lib/ics";
+import { encodeShared } from "@/lib/shared-meeting";
 
 const MAX_CITIES = 5;
 const HALF_HOURS_IN_DAY = 48;
 const DEFAULT_SLUGS = ["new-york", "london", "tokyo"] as const;
+const DEFAULT_DURATION_MIN = 30;
 
 function utcAtHalfHour(reference: Date, halfHourIndex: number): Date {
   const startOfDayUTC = DateTime.fromJSDate(reference, { zone: "utc" })
@@ -92,13 +96,57 @@ function CityRow({ city, pointerAt, onRemove, canRemove }: CityRowProps) {
   );
 }
 
-export function MeetingPlanner() {
-  const [selected, setSelected] = useState<string[]>([...DEFAULT_SLUGS]);
-  const [referenceUTC] = useState(() => {
-    const now = DateTime.utc().startOf("day").plus({ hours: 12 });
-    return now.toJSDate();
+export interface MeetingPlannerProps {
+  initialSlugs?: ReadonlyArray<string>;
+  initialUtcMinutes?: number;
+  initialDurationMinutes?: number;
+}
+
+export function MeetingPlanner({
+  initialSlugs,
+  initialUtcMinutes,
+  initialDurationMinutes,
+}: MeetingPlannerProps = {}) {
+  const searchParams = useSearchParams();
+
+  const initialFromUrl = useMemo(() => {
+    if (!searchParams) return null;
+    const c = searchParams.get("c");
+    const t = searchParams.get("t");
+    const d = searchParams.get("d");
+    if (!c) return null;
+    return {
+      slugs: c.split(",").filter(Boolean),
+      t: t ? Number.parseInt(t, 10) : undefined,
+      d: d ? Number.parseInt(d, 10) : undefined,
+    };
+  }, [searchParams]);
+
+  const [selected, setSelected] = useState<string[]>(() => {
+    if (initialFromUrl?.slugs.length) return initialFromUrl.slugs;
+    if (initialSlugs && initialSlugs.length > 0) return [...initialSlugs];
+    return [...DEFAULT_SLUGS];
   });
-  const [halfHourIndex, setHalfHourIndex] = useState(24);
+  const [referenceUTC] = useState(() =>
+    DateTime.utc().startOf("day").plus({ hours: 12 }).toJSDate(),
+  );
+  const [halfHourIndex, setHalfHourIndex] = useState(() => {
+    const minutes =
+      initialFromUrl?.t ??
+      initialUtcMinutes ??
+      12 * 60;
+    return Math.max(0, Math.min(HALF_HOURS_IN_DAY - 1, Math.round(minutes / 30)));
+  });
+  const [durationMinutes, setDurationMinutes] = useState(
+    initialFromUrl?.d ?? initialDurationMinutes ?? DEFAULT_DURATION_MIN,
+  );
+  const [copied, setCopied] = useState(false);
+
+  useEffect(() => {
+    if (!copied) return;
+    const handle = setTimeout(() => setCopied(false), 1500);
+    return () => clearTimeout(handle);
+  }, [copied]);
 
   const pointerAt = useMemo(
     () => utcAtHalfHour(referenceUTC, halfHourIndex),
@@ -131,6 +179,34 @@ export function MeetingPlanner() {
   }, [selectedCities, referenceUTC]);
 
   const overlapHours = overlapCount / 2;
+
+  function handleSchedule() {
+    const cityNames = selectedCities.map((c) => c.name).join(" / ");
+    const ics = buildMeetingICS({
+      title: `Meeting: ${cityNames}`,
+      description: `Cross-timezone meeting planned with timezone-planner.\nAttendees in: ${cityNames}.`,
+      startUTC: pointerAt,
+      durationMinutes,
+    });
+    downloadICS(`meeting-${pointerAt.toISOString().slice(0, 16)}.ics`, ics);
+  }
+
+  async function handleShare() {
+    if (typeof window === "undefined") return;
+    const utcMinutes = halfHourIndex * 30;
+    const query = encodeShared({
+      cities: selected,
+      utcMinutes,
+      durationMinutes,
+    });
+    const url = `${window.location.origin}/meeting?${query}`;
+    try {
+      await navigator.clipboard.writeText(url);
+      setCopied(true);
+    } catch {
+      window.prompt("Copy this share link:", url);
+    }
+  }
 
   return (
     <section className="bg-card mx-auto w-full max-w-4xl rounded-lg border p-4 shadow-sm sm:p-6">
@@ -179,6 +255,30 @@ export function MeetingPlanner() {
           <span>12:00 UTC</span>
           <span>24:00 UTC</span>
         </div>
+      </div>
+
+      <div className="mt-4 flex flex-wrap items-center gap-2">
+        <label className="text-muted-foreground text-sm" htmlFor="dur">
+          Duration
+        </label>
+        <select
+          id="dur"
+          value={durationMinutes}
+          onChange={(e) => setDurationMinutes(Number(e.target.value))}
+          className="bg-background rounded-md border px-2 py-1 text-sm"
+        >
+          <option value={15}>15 min</option>
+          <option value={30}>30 min</option>
+          <option value={45}>45 min</option>
+          <option value={60}>60 min</option>
+          <option value={90}>90 min</option>
+        </select>
+        <Button size="sm" onClick={handleSchedule}>
+          Add to Calendar (.ics)
+        </Button>
+        <Button size="sm" variant="outline" onClick={handleShare}>
+          {copied ? "Copied!" : "Share link"}
+        </Button>
       </div>
 
       {selectedCities.length < MAX_CITIES && remainingCities.length > 0 && (
