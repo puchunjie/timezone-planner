@@ -89,7 +89,7 @@ export default async function CityPage({ params }: PageProps) {
         id={`ld-bc-city-${city.slug}`}
         items={[
           { name: "Home", url: "/" },
-          { name: "City", url: "/" },
+          { name: "Cities", url: "/cities" },
           { name: city.name, url: `/city/${city.slug}` },
         ]}
       />
@@ -98,7 +98,10 @@ export default async function CityPage({ params }: PageProps) {
           <Link href="/" className="hover:underline">
             Home
           </Link>{" "}
-          / City
+          /{" "}
+          <Link href="/cities" className="hover:underline">
+            Cities
+          </Link>
         </nav>
 
         <header className="flex flex-col gap-3">

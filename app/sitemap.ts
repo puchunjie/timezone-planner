@@ -4,12 +4,16 @@ import { allPairSlugs } from "@/lib/pairs";
 import { timezones } from "@/data/timezones";
 import { SITE_URL } from "@/lib/site";
 
+export const dynamic = "force-static";
+
 const STATIC_PATHS: ReadonlyArray<{
   path: string;
   changeFrequency: MetadataRoute.Sitemap[number]["changeFrequency"];
   priority: number;
 }> = [
   { path: "/", changeFrequency: "weekly", priority: 1.0 },
+  { path: "/meet", changeFrequency: "weekly", priority: 0.9 },
+  { path: "/cities", changeFrequency: "weekly", priority: 0.9 },
   { path: "/about", changeFrequency: "yearly", priority: 0.5 },
   { path: "/privacy", changeFrequency: "yearly", priority: 0.3 },
   { path: "/terms", changeFrequency: "yearly", priority: 0.3 },

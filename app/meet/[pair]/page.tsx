@@ -120,7 +120,7 @@ export default async function MeetPairPage({ params }: PageProps) {
         id={`ld-bc-meet-${pair.slug}`}
         items={[
           { name: "Home", url: "/" },
-          { name: "Meet", url: "/" },
+          { name: "Pairs", url: "/meet" },
           { name: `${a.name} and ${b.name}`, url: `/meet/${pair.slug}` },
         ]}
       />
@@ -129,16 +129,40 @@ export default async function MeetPairPage({ params }: PageProps) {
           <Link href="/" className="hover:underline">
             Home
           </Link>{" "}
-          / Meet
+          /{" "}
+          <Link href="/meet" className="hover:underline">
+            Pairs
+          </Link>
         </nav>
 
         <header className="flex flex-col gap-3">
           <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">
-            Meeting Time Between {a.name} and {b.name}
+            Meeting Time Between{" "}
+            <Link href={`/city/${a.slug}`} className="hover:underline">
+              {a.name}
+            </Link>{" "}
+            and{" "}
+            <Link href={`/city/${b.slug}`} className="hover:underline">
+              {b.name}
+            </Link>
           </h1>
           <p className="text-muted-foreground text-base">
             Time difference: <strong>{absDiff} hours</strong> ({ahead.name} is
-            ahead of {behind.name}). {a.name}: {aOffset}. {b.name}: {bOffset}.
+            ahead of {behind.name}).{" "}
+            <Link
+              href={`/city/${a.slug}`}
+              className="text-primary hover:underline"
+            >
+              {a.name}
+            </Link>
+            : {aOffset}.{" "}
+            <Link
+              href={`/city/${b.slug}`}
+              className="text-primary hover:underline"
+            >
+              {b.name}
+            </Link>
+            : {bOffset}.
           </p>
         </header>
 

@@ -11,6 +11,12 @@ export function SiteHeader() {
           <Link href="/" className="hover:underline">
             Planner
           </Link>
+          <Link href="/meet" className="hover:underline">
+            Pairs
+          </Link>
+          <Link href="/cities" className="hover:underline">
+            Cities
+          </Link>
           <Link href="/blog" className="hover:underline">
             Blog
           </Link>

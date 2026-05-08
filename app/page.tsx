@@ -1,5 +1,23 @@
 import { Suspense } from "react";
+import Link from "next/link";
 import { MeetingPlanner } from "@/components/meeting-planner";
+import { getCity } from "@/data/cities";
+import { pairSlug } from "@/lib/pairs";
+
+const POPULAR_PAIRS: ReadonlyArray<readonly [string, string]> = [
+  ["new-york", "london"],
+  ["new-york", "tokyo"],
+  ["london", "tokyo"],
+  ["san-francisco", "tokyo"],
+  ["london", "singapore"],
+  ["sydney", "london"],
+  ["new-york", "san-francisco"],
+  ["lisbon", "new-york"],
+  ["bali", "new-york"],
+  ["bengaluru", "san-francisco"],
+  ["dubai", "london"],
+  ["mexico-city", "london"],
+];
 
 export default function Home() {
   return (
@@ -27,6 +45,51 @@ export default function Home() {
         >
           <MeetingPlanner />
         </Suspense>
+
+        <section className="flex flex-col gap-3">
+          <div className="flex items-baseline justify-between">
+            <h2 className="text-xl font-semibold">Popular city pairs</h2>
+            <Link
+              href="/meet"
+              className="text-primary text-sm hover:underline"
+            >
+              See all pairs →
+            </Link>
+          </div>
+          <ul className="grid gap-2 sm:grid-cols-3">
+            {POPULAR_PAIRS.map(([aSlug, bSlug]) => {
+              const a = getCity(aSlug);
+              const b = getCity(bSlug);
+              if (!a || !b) return null;
+              const slug = pairSlug(a, b);
+              return (
+                <li key={slug}>
+                  <Link
+                    href={`/meet/${slug}`}
+                    className="bg-card hover:bg-accent block rounded-md border px-3 py-2 text-sm"
+                  >
+                    {a.name} ↔ {b.name}
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
+        </section>
+
+        <section className="bg-card flex flex-col gap-2 rounded-lg border p-5 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <h2 className="text-base font-semibold">Browse all 50 cities</h2>
+            <p className="text-muted-foreground text-sm">
+              Single-city guides with offset tables and DST schedules.
+            </p>
+          </div>
+          <Link
+            href="/cities"
+            className="text-primary text-sm hover:underline"
+          >
+            See all cities →
+          </Link>
+        </section>
 
         <section className="grid gap-4 sm:grid-cols-3">
           <Feature
