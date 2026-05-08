@@ -17,6 +17,9 @@ export function SiteHeader() {
           <Link href="/cities" className="hover:underline">
             Cities
           </Link>
+          <Link href="/holidays" className="hover:underline">
+            Holidays
+          </Link>
           <Link href="/blog" className="hover:underline">
             Blog
           </Link>
@@ -40,6 +43,9 @@ export function SiteFooter() {
           </Link>
           <Link href="/blog" className="hover:underline">
             Blog
+          </Link>
+          <Link href="/holidays" className="hover:underline">
+            Holidays
           </Link>
           <Link href="/privacy" className="hover:underline">
             Privacy

@@ -14,6 +14,7 @@ import {
   getOverlap,
   getTimeDifferenceHours,
 } from "@/lib/timezone";
+import { getUpcomingHolidays } from "@/lib/holidays";
 import { ArticleJsonLd, BreadcrumbJsonLd } from "@/components/json-ld";
 
 interface PageProps {
@@ -107,6 +108,9 @@ export default async function MeetPairPage({ params }: PageProps) {
 
   const aOffset = getOffsetLabel(a.timezone, ref);
   const bOffset = getOffsetLabel(b.timezone, ref);
+
+  const upcomingA = getUpcomingHolidays(a.countryCode, ref, 3);
+  const upcomingB = getUpcomingHolidays(b.countryCode, ref, 3);
 
   return (
     <div className="bg-background min-h-dvh font-sans">
@@ -254,6 +258,62 @@ export default async function MeetPairPage({ params }: PageProps) {
             </div>
           )}
         </section>
+
+        {(upcomingA.length > 0 || upcomingB.length > 0) && (
+          <section className="flex flex-col gap-3">
+            <h2 className="text-xl font-semibold">Upcoming Public Holidays</h2>
+            <p className="text-muted-foreground text-sm">
+              Heads-up on national days off in either country that may affect
+              scheduling.
+            </p>
+            <div className="grid gap-3 sm:grid-cols-2">
+              {upcomingA.length > 0 && (
+                <div>
+                  <h3 className="mb-1 text-sm font-semibold">
+                    <Link
+                      href={`/holidays/${a.countryCode.toLowerCase()}`}
+                      className="hover:underline"
+                    >
+                      {a.country}
+                    </Link>
+                  </h3>
+                  <ul className="text-muted-foreground text-sm">
+                    {upcomingA.map((h) => (
+                      <li key={`${h.isoDate}-${h.name}`}>
+                        <span className="font-mono">
+                          {DateTime.fromISO(h.isoDate).toFormat("LLL d")}
+                        </span>{" "}
+                        — {h.name}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+              {upcomingB.length > 0 && (
+                <div>
+                  <h3 className="mb-1 text-sm font-semibold">
+                    <Link
+                      href={`/holidays/${b.countryCode.toLowerCase()}`}
+                      className="hover:underline"
+                    >
+                      {b.country}
+                    </Link>
+                  </h3>
+                  <ul className="text-muted-foreground text-sm">
+                    {upcomingB.map((h) => (
+                      <li key={`${h.isoDate}-${h.name}`}>
+                        <span className="font-mono">
+                          {DateTime.fromISO(h.isoDate).toFormat("LLL d")}
+                        </span>{" "}
+                        — {h.name}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </div>
+          </section>
+        )}
 
         <section className="flex flex-col gap-3">
           <h2 className="text-xl font-semibold">Common Scenarios</h2>

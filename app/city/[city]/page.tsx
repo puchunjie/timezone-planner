@@ -10,6 +10,7 @@ import {
   isDST,
   nextDSTChange,
 } from "@/lib/timezone";
+import { getUpcomingHolidays } from "@/lib/holidays";
 import { BreadcrumbJsonLd, PlaceJsonLd } from "@/components/json-ld";
 
 interface PageProps {
@@ -74,6 +75,8 @@ export default async function CityPage({ params }: PageProps) {
       peer,
       slug: pairSlug(city, peer),
     }));
+
+  const upcomingHolidays = getUpcomingHolidays(city.countryCode, ref, 5);
 
   return (
     <div className="bg-background min-h-dvh font-sans">
@@ -175,6 +178,34 @@ export default async function CityPage({ params }: PageProps) {
             </table>
           </div>
         </section>
+
+        {upcomingHolidays.length > 0 && (
+          <section>
+            <h2 className="mb-3 text-xl font-semibold">
+              Upcoming Public Holidays in {city.country}
+            </h2>
+            <ul className="bg-card divide-y rounded-lg border">
+              {upcomingHolidays.map((h) => (
+                <li
+                  key={`${h.isoDate}-${h.name}`}
+                  className="flex gap-4 px-4 py-2 text-sm"
+                >
+                  <span className="text-muted-foreground w-24 font-mono">
+                    {DateTime.fromISO(h.isoDate).toFormat("LLL d, yyyy")}
+                  </span>
+                  <span className="text-muted-foreground w-24">{h.weekday}</span>
+                  <span className="flex-1">{h.name}</span>
+                </li>
+              ))}
+            </ul>
+            <Link
+              href={`/holidays/${city.countryCode.toLowerCase()}`}
+              className="text-primary mt-2 inline-block text-sm hover:underline"
+            >
+              See all {city.country} holidays →
+            </Link>
+          </section>
+        )}
 
         <section>
           <h2 className="mb-3 text-xl font-semibold">

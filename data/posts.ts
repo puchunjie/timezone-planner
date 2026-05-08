@@ -9,6 +9,248 @@ export interface BlogPost {
 
 export const posts: readonly BlogPost[] = [
   {
+    slug: "global-holiday-calendar-remote-teams",
+    title: "The Global Holiday Calendar Every Remote Team Should Know",
+    description:
+      "Which national holidays distributed teams miss most often, why the gaps hurt, and how to build a shared holiday awareness without micro-managing anyone's calendar.",
+    publishedAt: "2026-05-09",
+    readingMinutes: 9,
+    body: `The quiet productivity killer in distributed teams isn't the one you'd guess. It isn't timezone confusion (we have tools for that). It isn't bad documentation (teams that care fix it). It's **national holidays you forgot existed**.
+
+A New York engineering lead schedules an urgent release review for March 17th. Her senior IC in Bengaluru is out — it's Holi, a public holiday in India. She doesn't find out until he hasn't responded by 11 AM her time. The release slips a day. Nobody did anything wrong. The information was always available. It was simply never part of anyone's planning process.
+
+Multiply by fifty such incidents per year and you're looking at real lost velocity, plus the harder-to-measure cost of remote teammates feeling invisible.
+
+## The holidays most distributed teams underestimate
+
+Every team knows about Christmas, New Year's Day, US Independence Day, and Thanksgiving. Beyond those, awareness falls off a cliff. Here are the holidays most likely to surprise an HQ in North America or Europe:
+
+**Asia**
+- **Chinese New Year / Spring Festival** — 7-day official break in China, often triggering slowdowns across the broader region (HK, Taiwan, Singapore, Vietnam all observe variants). Falls between late January and mid-February.
+- **Golden Week (Japan)** — 4-5 consecutive holidays in late April / early May. Effectively shuts down Japan for a week.
+- **Obon (Japan)** — mid-August summer observance. Not an official public holiday but widely taken as vacation.
+- **Diwali (India)** — 1-5 days depending on state. Usually in October or November.
+- **Eid al-Fitr / Eid al-Adha** — observed across Muslim-majority countries (UAE, Indonesia, Malaysia, parts of India). Dates shift annually by the lunar calendar.
+- **Lunar New Year variants in Vietnam (Tết) and Korea (Seollal)** — shift with Chinese New Year's dates.
+
+**Latin America**
+- **Carnival (Brazil)** — not officially a federal holiday but effectively shuts down the country for days in February or March.
+- **Día de los Muertos (Mexico)** — November 1-2.
+- **Semana Santa (most of Latin America)** — the week leading up to Easter. Offices routinely close Thursday-Friday.
+
+**Europe**
+- **Easter Monday** — public holiday across most of continental Europe, not observed in the US.
+- **Labour Day / May 1** — public in most of Europe, not in the US.
+- **German Unity Day (October 3)** — German teams off.
+- **Bastille Day (July 14)** — French teams off.
+
+**Middle East / Africa**
+- **UAE / Saudi National Day** — September and December respectively.
+- **Nigerian Independence Day (October 1)** — with extended unofficial observance.
+
+The pattern: if a holiday isn't on a US or UK calendar by default, most HQ teams don't see it coming.
+
+## Why this matters more than it seems
+
+Three structural reasons distributed teams should take holiday awareness seriously:
+
+**1. Missed deadlines compound silently.** An IC whose holiday is ignored doesn't usually push back. They might say "oh yeah, Holi was this week, I was out" the next day — but by then a chain of assumptions has cascaded. The manager who scheduled the review, the peers who expected approval, the downstream product team waiting on release. One missed context becomes a dozen.
+
+**2. Remote teammates notice when they're unseen.** When leadership casually says "we'll decide this by end of March" and doesn't think about Holi / Ramadan / Chinese New Year, it reads — correctly — as "our calendar is the default, yours is the exception." Over time, this erodes engagement and loyalty more than any compensation gap.
+
+**3. Release schedules collide with commerce cycles you don't see.** Shipping a major change in China during Spring Festival week is almost always a mistake. Customer-facing changes during Diwali in India target a distracted audience. These aren't risks; they're predictable patterns HQ just doesn't absorb.
+
+## What to do, concretely
+
+### Build a shared holiday calendar
+
+At minimum, maintain a shared calendar that marks public holidays for every country a teammate lives in. A single Google Calendar with country-specific calendar subscriptions works. So does a Notion database, a pinned Slack message, or a dedicated /holidays section on your internal wiki.
+
+The specific tool matters less than **making the information visible in the calendar surface people already use**. A wiki page that nobody opens is worse than a calendar layer that appears by default.
+
+### Treat holidays as first-class scheduling constraints
+
+When scheduling any cross-timezone meeting or deadline, check: is anyone's country observing a public holiday during this window? If yes, adjust. This adds 30 seconds to each scheduling decision and eliminates almost all of the preventable misses.
+
+For recurring meetings, review the quarterly outlook once per quarter: which upcoming holidays will affect attendance? Adjust or explicitly acknowledge ahead of time.
+
+### Let teammates proactively flag
+
+Create a team norm where ICs can add their country's holidays to shared calendars without asking permission. The worst version of this problem is the engineer who says "I'll be out Thursday for Eid" three days in advance because they weren't sure it would be acceptable to take the day. Make it unambiguous: local public holidays are off-days, no special approval needed.
+
+### Use a holiday-aware planning surface
+
+When planning significant work (launches, cross-team deliverables, customer-facing releases), factor in every teammate's holiday calendar explicitly. Tools like our [country-by-country holiday pages](/holidays) let you check a full-year view for any country in your team's footprint.
+
+### Flag the "silent gaps"
+
+Some holidays aren't legal public holidays but function as them. Japan's Obon week, Brazil's Carnival, the days between Christmas and New Year in much of Europe — all shut down in practice even if they're not officially mandatory days off. Learn which ones apply to your team and treat them as de facto holidays.
+
+## Things we've seen work
+
+- **The "country spotlight" slack ritual**: once a month, one teammate posts a short summary of upcoming holidays and cultural observances in their country for the following month. Low effort, high awareness.
+- **Holiday-aware release calendars**: engineering release schedules that explicitly avoid overlapping with significant national holiday windows in any teammate's country.
+- **Cross-region on-call adjustments**: rotating on-call so that the person from the country currently observing a holiday is off the rotation, without making it an exception to negotiate.
+- **End-of-quarter awareness reviews**: before finalizing quarterly plans, check holidays for the next 90 days against proposed deadlines.
+
+## Things we've seen fail
+
+- **Global HR calendars with every country listed and no filtering**: overwhelming, so people tune them out. Keep it to your team's actual footprint.
+- **Unilateral policy like "holiday must be requested 30 days in advance"**: works for vacation, ridiculous for national holidays. Let them be implicit.
+- **Expecting non-HQ teammates to "flex" around HQ holidays**: e.g. expecting engineers in India to be available during US Thanksgiving. This is the explicit version of "our calendar is the default."
+
+## The underlying principle
+
+A distributed team's calendar is not the HQ calendar. Pretending otherwise is one of the slow-burn mistakes that doesn't show up on any dashboard but quietly shapes how people feel about working for you.
+
+Building holiday awareness into your planning is a small investment. The payoff is operational (fewer missed deadlines, smoother releases) and cultural (everyone feels their locale is real and respected, not an exception to the "normal" calendar).
+
+Start with the shared calendar. Add proactive flagging norms. Review quarterly. The team doesn't have to become a global-HR expert overnight — just stop being blind to the holidays that shape half your organization's working year.`,
+  },
+  {
+    slug: "golden-week-diwali-christmas-planning",
+    title: "Golden Week, Diwali, Christmas: Planning Releases Around Major Holiday Windows",
+    description:
+      "The five global holiday windows that force distributed teams to plan differently — when they are, how long they last, and the specific release and communication patterns that survive them.",
+    publishedAt: "2026-05-09",
+    readingMinutes: 10,
+    body: `Most distributed teams handle day-to-day holiday scheduling reasonably well — someone's out today, adjust. What they handle poorly is the **cluster** holidays: the 5-10 windows per year where a significant portion of the world is partially or entirely offline for multiple consecutive days. These windows require different planning, not just awareness. This post walks through the five most important ones and the patterns that work.
+
+## The five windows that matter most
+
+### 1. Chinese New Year / Spring Festival (late January to mid-February)
+
+**Duration**: 7-10 effective days. Chinese government declares 7 official days; commercial activity often slows 2-3 days before and 2-3 days after.
+
+**Who observes**: Mainland China, Hong Kong, Taiwan, Singapore, Vietnam (as Tết), Korea (as Seollal), Malaysia. Also a widely observed cultural event in Thailand, Indonesia, Philippines.
+
+**Effective impact**: If you do business with or employ people in any of these regions, you should assume near-total silence for 7-10 days. Factories pause, shipping slows, office teams go home to family. Replies to emails and messages often lag a full week.
+
+**Planning pattern**: Avoid launching anything customer-facing to these markets during the window. Avoid scheduling cross-regional deliverables whose deadlines fall within it. Have any critical coordination complete a full week before the window opens.
+
+### 2. Golden Week (Japan, late April to early May)
+
+**Duration**: 4-7 days. Technically 4 consecutive public holidays (April 29, May 3-5), but most companies extend the break to a full week.
+
+**Who observes**: Japan. No direct equivalent in other Asian countries, though some adjacent markets experience soft slowdowns because of Japanese client absence.
+
+**Effective impact**: Complete shutdown of Japanese business for ~7 days. Domestic travel peaks. Customer service SLAs usually extended. If your team has Japanese members, they're effectively unavailable.
+
+**Planning pattern**: For Japan-facing products, freeze changes in the 48 hours before Golden Week. Push major launches to the week after. For teams with Japanese engineers, block any critical deliverables whose work would fall across the window.
+
+### 3. Summer holiday cluster (Europe + parts of Asia, July to August)
+
+**Duration**: 2-6 weeks rolling. Most intense August 1-20.
+
+**Who observes**: France (notably — "les grandes vacances"), Italy, Spain, Germany, much of Southern Europe generally. Japan's Obon (mid-August) overlaps. Nordic countries have long summer breaks too.
+
+**Effective impact**: Many European companies operate with skeleton crews through August. French offices famously close for 3-4 weeks. German and Italian ICs often take 2-3 weeks contiguous. Meeting cadence in Europe measurably collapses; response times extend; large decisions defer.
+
+**Planning pattern**: Don't plan a European launch or major project milestone for August. Front-load decisions before July. Accept that European approval on anything will take longer. Some US-EU teams explicitly run "summer quiet hours" recognizing the shift.
+
+### 4. Diwali and Indian festival cluster (October to November)
+
+**Duration**: Diwali itself is 1-5 days depending on state, but the broader festival season (Dussehra, Diwali, Bhai Dooj, regional festivals) stretches across 4-6 weeks.
+
+**Who observes**: India primarily, with Indian diaspora elsewhere. Some neighboring countries observe related festivals.
+
+**Effective impact**: Indian office attendance drops significantly across the festival season. Customer-facing changes can be poorly timed against peak festival shopping. For teams with significant Indian engineering presence (common — India has the world's largest distributed-engineering talent pool), the window materially slows velocity.
+
+**Planning pattern**: Avoid scheduling India-facing launches during the Diwali week proper. Build slack into project timelines for October-November if your team has significant Indian contributors. Recognize that festival bonuses, mandatory days off, and commute disruptions all affect the period.
+
+### 5. Christmas through New Year's (late December to early January)
+
+**Duration**: 10-14 days depending on company culture. Officially 2-3 public holidays, but between December 23 and January 2 is essentially a "soft freeze" across most of the West and increasingly in parts of Asia.
+
+**Who observes**: Universally — this is the single holiday window the entire Western business world accommodates. Also observed in varying degrees across Asia, Latin America, and Africa.
+
+**Effective impact**: Near-complete slowdown of Western business for ~2 weeks. Engineering teams often freeze changes. Customer support runs on skeleton. New deals rarely close.
+
+**Planning pattern**: Every mature engineering team runs a "change freeze" from roughly December 20 to January 2. Use the window for internal cleanup, planning, or time off. Don't schedule cross-timezone launches. Don't plan to "finally get to X" during the window — your collaborators won't be there.
+
+## Secondary windows worth knowing
+
+These are less universally impactful but regularly surprise teams:
+
+- **Ramadan** (shifts annually by lunar calendar): Muslim-majority countries see reduced working hours for a full month. Dubai, Indonesia, Malaysia, parts of India are affected. Working hours often shift to accommodate fasting.
+- **Semana Santa / Holy Week** (the week before Easter): significant slowdown across Latin America and parts of Southern Europe.
+- **Carnival** (February/March): Brazil's unofficial national shutdown. Rio and São Paulo effectively close for 4-7 days.
+- **Songkran (Thai New Year, mid-April)**: 3-4 day water festival, complete shutdown in Thailand.
+- **Turkey's Kurban Bayramı and Ramazan Bayramı**: multi-day national holidays tied to the lunar calendar, with significant business impact.
+
+## Planning patterns that actually work
+
+### The "window calendar"
+
+Maintain a 12-month forward-looking calendar of significant holiday windows for every region in your team's footprint. Review it at the start of each quarter. Mark launches, deliverables, and cross-regional deadlines against it.
+
+This doesn't need to be elaborate. A shared Google Calendar with color-coded events ("China closed Feb 1-10", "Japan Golden Week Apr 29-May 5") is enough, provided every planning meeting has it open.
+
+### The "freeze and burn" pattern
+
+For each major window affecting your team, define:
+
+1. **Freeze date** — last date you'll deploy customer-facing changes before the window.
+2. **Burn date** — first date you'll resume normal deployment after.
+3. **Skeleton plan** — minimum on-call and critical-path coverage for the window itself.
+
+This framework forces explicit discussion instead of default drift.
+
+### The "proactive handoff"
+
+Before any major window, engineers going out should explicitly hand off their active work:
+
+- Current state of each project (link to a doc, not a Slack message).
+- Any pending approvals or blockers.
+- What's urgent vs what can wait.
+- Who to contact if there's a genuine emergency.
+
+This takes 20 minutes per engineer and eliminates the vast majority of "urgent question during holidays" panic.
+
+### The "local champion"
+
+For every major holiday window, designate a teammate in a **non-observing** region as the champion for coordinating around the window. They're responsible for:
+
+- Reminding the team 2 weeks before the window starts.
+- Triaging anything that comes up during the window.
+- Reporting post-window on what slipped and what didn't.
+
+This splits the cognitive load and prevents HQ from centralizing too much of the planning burden.
+
+## Patterns that don't work
+
+**Expecting teammates in affected regions to "be available if needed" during their cultural holidays.** This is the fastest way to lose those teammates' trust. The window is the window. Plan around it.
+
+**Scheduling major decisions for the weeks immediately after a window.** Everyone is catching up, reading a week of emails, and re-orienting. The first two days after a major window are the worst time to demand decisive movement.
+
+**Treating "soft" windows (Obon, August in Europe) as optional.** They aren't. Ignoring them produces the same planning failures as ignoring the formal holidays.
+
+**Rolling the change freeze "for someone who really wants to ship this."** The whole point of a freeze is that it applies uniformly. Exceptions undermine the trust that makes freezes work.
+
+## The annual rhythm
+
+A mature distributed team's year has a recognizable shape:
+
+- **January-early February**: Western business full-speed, Asia slowing or paused for Spring Festival.
+- **Late February-March**: global catch-up, no major windows.
+- **April-May**: Japan Golden Week; some European Easter breaks.
+- **June-July**: first part of European summer; Asia-Pacific normal.
+- **August**: European slow period; US and Asia-Pacific normal.
+- **September-mid-October**: global catch-up; India starts festival ramp.
+- **Late October-November**: Indian Diwali; US Thanksgiving at the end.
+- **Mid-December-early January**: universal slowdown, change freezes, holiday gatherings.
+
+There's no month with no considerations. There are maybe 5-6 weeks a year when no major region is in a significant holiday window. Plan your most ambitious cross-region work for those weeks.
+
+## What this means for your planning
+
+If you plan a distributed team's year without factoring in these windows, you'll consistently over-estimate capacity by 10-15%. Not because people are lazy — because the real global calendar has 5-6 weeks of structural holiday drag that isn't on the HQ calendar.
+
+The teams that plan around this land their commitments. The teams that don't end up with chronic Q2 and Q4 underperformance they can't explain.
+
+You can build awareness in a week of focused calendar work. It's the highest-ROI project management improvement most distributed teams never prioritize.`,
+  },
+  {
     slug: "follow-the-sun-engineering",
     title: "The Rise of \"Follow the Sun\" Engineering",
     description:

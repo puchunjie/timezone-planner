@@ -2,6 +2,8 @@ import type { MetadataRoute } from "next";
 import { cities } from "@/data/cities";
 import { allPairSlugs } from "@/lib/pairs";
 import { timezones } from "@/data/timezones";
+import { countries } from "@/data/countries";
+import { popularCountryPairs } from "@/data/country-pairs";
 import { SITE_URL } from "@/lib/site";
 
 export const dynamic = "force-static";
@@ -14,6 +16,7 @@ const STATIC_PATHS: ReadonlyArray<{
   { path: "/", changeFrequency: "weekly", priority: 1.0 },
   { path: "/meet", changeFrequency: "weekly", priority: 0.9 },
   { path: "/cities", changeFrequency: "weekly", priority: 0.9 },
+  { path: "/holidays", changeFrequency: "weekly", priority: 0.9 },
   { path: "/about", changeFrequency: "yearly", priority: 0.5 },
   { path: "/privacy", changeFrequency: "yearly", priority: 0.3 },
   { path: "/terms", changeFrequency: "yearly", priority: 0.3 },
@@ -58,6 +61,32 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: today,
       changeFrequency: "monthly",
       priority: 0.8,
+    });
+  }
+
+  for (const c of countries) {
+    entries.push({
+      url: `${SITE_URL}/holidays/${c.code.toLowerCase()}`,
+      lastModified: today,
+      changeFrequency: "monthly",
+      priority: 0.7,
+    });
+    for (const year of [2025, 2026, 2027]) {
+      entries.push({
+        url: `${SITE_URL}/holidays/${c.code.toLowerCase()}/${year}`,
+        lastModified: today,
+        changeFrequency: "monthly",
+        priority: 0.6,
+      });
+    }
+  }
+
+  for (const p of popularCountryPairs()) {
+    entries.push({
+      url: `${SITE_URL}/holidays/comparison/${p.slug}`,
+      lastModified: today,
+      changeFrequency: "monthly",
+      priority: 0.7,
     });
   }
 
