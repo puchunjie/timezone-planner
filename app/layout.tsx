@@ -12,6 +12,9 @@ export const metadata: Metadata = {
   },
   description:
     "Modern meeting planner for distributed teams and digital nomads. Drag one pointer, see every teammate's local time and business overlap. 50 cities, 1,225 pairs.",
+  verification: {
+    google: "z0Kyj8aV7wX1TKrYX6wSc_4ef5zG3ZdNALnVykHbCSg",
+  },
 };
 
 export default function RootLayout({
