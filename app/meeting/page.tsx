@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
-import { Suspense } from "react";
-import { MeetingPlanner } from "@/components/meeting-planner";
+import { MeetingPlannerLazy } from "@/components/meeting-planner-lazy";
 
 export const metadata: Metadata = {
   title: "Shared Meeting",
@@ -19,13 +18,7 @@ export default function SharedMeetingPage() {
             Loaded from the link you opened. Adjust the time or cities to refine.
           </p>
         </header>
-        <Suspense
-          fallback={
-            <div className="bg-card mx-auto h-72 w-full max-w-4xl animate-pulse rounded-lg border" />
-          }
-        >
-          <MeetingPlanner />
-        </Suspense>
+        <MeetingPlannerLazy />
       </main>
     </div>
   );

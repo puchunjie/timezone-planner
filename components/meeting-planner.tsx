@@ -71,14 +71,17 @@ function CityRow({ city, pointerAt, onRemove, canRemove }: CityRowProps) {
           {dayLabel} · {offset}
         </div>
       </div>
-      <div className="flex h-6 overflow-hidden rounded-sm border">
+      <div
+        className="flex h-6 overflow-hidden rounded-sm border"
+        role="img"
+        aria-label={`${city.name} business hours band`}
+      >
         {cells.map((isWork, i) => (
           <div
             key={i}
             className={`flex-1 ${
               isWork ? "bg-emerald-400/70" : "bg-muted/40"
             } ${i % 2 === 0 ? "border-l border-l-background/20" : ""}`}
-            title={`${formatLocalTime(city.timezone, utcAtHalfHour(pointerAt, i))}`}
           />
         ))}
       </div>

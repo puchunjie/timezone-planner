@@ -1,6 +1,5 @@
-import { Suspense } from "react";
 import Link from "next/link";
-import { MeetingPlanner } from "@/components/meeting-planner";
+import { MeetingPlannerLazy } from "@/components/meeting-planner-lazy";
 import { getCity } from "@/data/cities";
 import { pairSlug } from "@/lib/pairs";
 
@@ -38,13 +37,7 @@ export default function Home() {
           </p>
         </section>
 
-        <Suspense
-          fallback={
-            <div className="bg-card mx-auto h-72 w-full max-w-4xl animate-pulse rounded-lg border" />
-          }
-        >
-          <MeetingPlanner />
-        </Suspense>
+        <MeetingPlannerLazy />
 
         <section className="flex flex-col gap-3">
           <div className="flex items-baseline justify-between">
