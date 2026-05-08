@@ -705,24 +705,63 @@ Cloudflare Pages 免费版 500 次 build/月够用。策略：
 - [x] **压力测试通过**：1229 个静态页 8.8 秒 SSG 完成（提前实现原计划 Week 4 的全量 1225 页规模）
 - [x] 改用 system font 替代 `next/font/google`（中国网络无障碍 build）
 
-### Day 4（Thu，2-3h）⬜ 进行中
-- [ ] `/city/[city]/page.tsx` 模板（50 个单城市页）
-- [ ] `/timezone/[tz-short]/page.tsx`（约 30 个）
-- [ ] Schedule as `.ics` 下载功能
-- [ ] Shareable URL（URL 参数序列化 + `/meeting/[hash]` 不索引页）
+### Day 4（Thu，2-3h）✅ 完成
+- [x] `/city/[city]/page.tsx` 模板 + 50 个单城市页（offset 对照表、popular pairs、DST schedule、nomad 标识）
+- [x] `/timezone/[tz]/page.tsx` + 13 个常用缩写（PST/EST/CST/GMT/CET/EET/IST/SGT/JST/KST/AEST/NZST/GST）
+- [x] `.ics` 下载功能（`lib/ics.ts`）
+- [x] Shareable URL（`lib/shared-meeting.ts` + `?c=&t=&d=` 参数 + `/meeting` 接收页 noindex）
+- [x] MeetingPlanner 升级：duration 选择、Add to Calendar、Share link（剪贴板）、URL params 自动初始化（Suspense 包裹 useSearchParams）
 
-### Day 5（Fri，1-2h）⬜
-- [ ] About / Privacy / Terms / Contact 4 页（AdSense 合规必备）
-- [ ] sitemap.xml / robots.txt（分片）
-- [ ] 在手机上测试（必须）
-- [ ] Lighthouse Core Web Vitals 跑一次
+### Day 5（Fri，1-2h）✅ 完成
+- [x] About / Privacy / Terms / Contact 4 页（AdSense 合规必备）
+- [x] `app/sitemap.ts` 自动生成 1300+ URL（含 home / 合规 / blog / 50 city / 13 timezone / 1225 pair）
+- [x] `app/robots.ts` 禁止 `/meeting`、指向 sitemap
+- [x] `lib/site.ts` SITE_URL 单一源（可通过 `NEXT_PUBLIC_SITE_URL` env 覆盖，切自定义域名只改一行）
+- [ ] 在手机上测试（**还没做**，需要你打开线上 URL 在手机访问）
+- [ ] Lighthouse Core Web Vitals（**还没做**）
 
-### Weekend（2-3h）⬜
-- [ ] 第 1-3 篇博客文章
-- [ ] JSON-LD 组件封装（`Article` / `Place` / `BreadcrumbList`）
-- [ ] 回顾本周，决定下周节奏
+### Weekend（2-3h）✅ 完成
+- [x] 全局 SiteHeader + SiteFooter（含 5 个底部合规链接 + 顶部 Planner / Blog / About 导航）
+- [x] JSON-LD 组件：`WebSite` / `Article` / `Place` / `BreadcrumbList`（`components/json-ld.tsx`）
+- [x] JSON-LD 植入：root layout（WebSite）、meet 页（Article + Breadcrumb）、city 页（Place + Breadcrumb）、blog 页（Article + Breadcrumb）
+- [x] 博客 1-3 篇（均 ≥1500 字）：
+  - "Best Practices for Scheduling Meetings Across Time Zones"（约 1500 字）
+  - "The Complete Guide to Daylight Saving Time for Remote Workers"（约 1800 字）
+  - "Top 10 Cities for Digital Nomads in 2026"（约 2000 字）
+- [x] `/blog` 索引 + `/blog/[slug]` 详情（零依赖 Markdown 渲染，避免引入 MDX）
 
 **第一周结束的 Demo URL**：~~`timezone-planner-xxx.pages.dev`~~ → **已就绪**：https://timezone-planner.puchunjie.workers.dev/
+
+### Week 1 实际产出 vs 原计划
+
+| 项目 | 原计划在 | 实际完成在 |
+|---|---|---|
+| 50 城市数据 + DST 测试 | Day 2 | ✅ Day 2（219 测试） |
+| Meeting Planner 联动 | Day 4 | ✅ Day 3（提前一天） |
+| 部署到 Cloudflare | Day 5 | ✅ Day 1（提前 4 天，OpenNext Workers） |
+| 1225 城市对页 SSG | **Week 4** | ✅ Day 3（**提前 3 周**） |
+| 50 单城市页 | Week 2 | ✅ Day 4 |
+| 时区信息页 | Week 3 | ✅ Day 4 |
+| `.ics` + Shareable URL | Week 3 | ✅ Day 4 |
+| 博客 1-3 篇 | Week 4 | ✅ Weekend |
+| About / Privacy / Terms / Contact | Week 4 | ✅ Day 5 |
+| sitemap / robots | Week 5 | ✅ Day 5 |
+| JSON-LD | Week 5 | ✅ Weekend |
+
+**第 1 周末实际站点规模**：1303 静态页（首页 + 1225 城市对 + 50 城市 + 13 时区 + 4 合规 + 3 博客 + 索引 + 系统页）
+
+### 还差但未完成
+- [ ] 手机端实测（你需要在手机访问 https://timezone-planner.puchunjie.workers.dev/ 走一遍核心流程）
+- [ ] Lighthouse 跑一次（确认 LCP / CLS / INP 达标，详见第 8 章性能目标）
+- [ ] 给自己交付物录一个 1 分钟"我做到了"视频（仪式感，别跳过）
+
+### 下一步建议（Week 2 起）
+
+按原计划 Week 2-3 已基本提前完成，接下来真正剩下的工作：
+
+1. **Week 2-3 节奏可放慢**，重点放在博客增量（再写 4-7 篇，凑够 10+ 篇）+ 性能调优
+2. **Week 5 提前到 Week 2**：买域名（推荐候选 `teamtime.io` / `meetingtimes.app` / `remotehours.com`）+ 注册 Search Console + 提交 sitemap
+3. **Week 6-7 仍按原计划**：申请 AdSense（站点已经达到原计划 Week 6 的内容密度）
 
 ---
 
