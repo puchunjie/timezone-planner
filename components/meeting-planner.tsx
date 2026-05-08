@@ -4,13 +4,6 @@ import { useEffect, useMemo, useState } from "react";
 import { DateTime } from "luxon";
 import { useSearchParams } from "next/navigation";
 import { Slider } from "@/components/ui/slider";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { cities, type City } from "@/data/cities";
 import {
@@ -283,24 +276,28 @@ export function MeetingPlanner({
 
       {selectedCities.length < MAX_CITIES && remainingCities.length > 0 && (
         <div className="mt-6 flex flex-wrap items-center gap-2">
-          <span className="text-muted-foreground text-sm">Add city:</span>
-          <Select
+          <label
+            htmlFor="add-city"
+            className="text-muted-foreground text-sm"
+          >
+            Add city:
+          </label>
+          <select
+            id="add-city"
             value=""
-            onValueChange={(slug) => {
+            onChange={(e) => {
+              const slug = e.target.value;
               if (slug) setSelected((prev) => [...prev, slug]);
             }}
+            className="bg-background min-w-[220px] rounded-md border px-3 py-2 text-sm"
           >
-            <SelectTrigger className="w-[220px]">
-              <SelectValue placeholder="Choose a city" />
-            </SelectTrigger>
-            <SelectContent>
-              {remainingCities.map((c) => (
-                <SelectItem key={c.slug} value={c.slug}>
-                  {c.name}, {c.country}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+            <option value="">Choose a city</option>
+            {remainingCities.map((c) => (
+              <option key={c.slug} value={c.slug}>
+                {c.name}, {c.country}
+              </option>
+            ))}
+          </select>
           <Button
             variant="ghost"
             size="sm"
